@@ -1,40 +1,161 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
+  IconButton,
+  Drawer,
+} from "@mui/material";
+
+import MenuIcon from "@mui/icons-material/Menu";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { NavMenu } from "./nav-menu";
-import { NavigationSheet } from "./navigation-sheet";
-import { PenTool } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import TopNavbar from "./TopNavbar";
 
 const Navbar = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const handleLogOut = () => {
+    router.refresh();
+  };
+
+  const isActive = (path: string) => pathname === path;
+
+  // const AuthButton = dynamic(
+  //   () => import("@/components/UI/AuthButton/AuthButton"),
+  //   { ssr: false }
+  // );
+
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Projects", path: "/projects" },
+    { name: "Blogs", path: "/blogs" },
+    { name: "Contact", path: "/contact" },
+  ];
+
   return (
-    <nav className="fixed top-6 inset-x-4 h-16 max-w-screen-xl mx-auto rounded-md bg-background border dark:border-slate-700/70 z-30">
-      <div className="flex h-full items-center justify-between px-6 md:px-8">
-        {/* Logo with consistent padding */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-          <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-            <PenTool className="w-5 h-5 " />
-          </div>
-          <span className="bg-gradient-primary bg-clip-text ">BlogCraft</span>
-        </Link>
+    <Box
+      sx={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1200,
+        backgroundColor: "white",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+      }}
+    >
+      {/* Top Strip */}
+      <TopNavbar />
 
-        {/* Desktop Menu with consistent horizontal spacing */}
-        <NavMenu className="hidden md:block" />
-
-        {/* Actions and Mobile Menu */}
-        <div className="flex items-center gap-4 md:gap-6">
-          <Button className="rounded-full px-5 py-2 text-sm md:text-base">
-            <Link href="/login" className="block w-full text-center">
-              Login
+      {/* Main Navbar */}
+      <Container>
+        <Stack
+          py={2}
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          {/* Logo */}
+          <Typography variant="h5" fontWeight={600}>
+            <Link href="/" passHref>
+              <Box
+                component="span"
+                sx={{ textDecoration: "none", color: "black" }}
+              >
+                Port
+                <Box component="span" color="primary.main">
+                  folio
+                </Box>{" "}
+                Project
+              </Box>
             </Link>
+          </Typography>
+
+          {/* Mobile Menu Icon */}
+          <Box sx={{ display: { xs: "block", sm: "none" } }}>
+            <IconButton onClick={() => setOpenMenu(true)} color="primary">
+              <MenuIcon />
+            </IconButton>
+          </Box>
+
+          {/* Desktop Nav Links */}
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{ display: { xs: "none", sm: "flex" } }}
+          >
+            {navLinks.map(({ name, path }) => (
+              <Link key={path} href={path} passHref>
+                <Button
+                  variant={isActive(path) ? "contained" : "outlined"}
+                  color="primary"
+                  size="small"
+                >
+                  {name}
+                </Button>
+              </Link>
+            ))}
+
+            {/* Auth button (Desktop) */}
+
+            <Button color="error" onClick={handleLogOut}>
+              Logout
+            </Button>
+
+            {/* {userInfo ? (
+              <Button color="error" onClick={handleLogOut}>
+                Logout
+              </Button>
+            ) : (
+              <AuthButton />
+            )} */}
+          </Stack>
+        </Stack>
+      </Container>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="right"
+        open={openMenu}
+        onClose={() => setOpenMenu(false)}
+        sx={{ display: { xs: "block", sm: "none" } }}
+      >
+        <Box sx={{ width: 250, p: 2 }}>
+          {navLinks.map(({ name, path }) => (
+            <Link key={path} href={path} passHref>
+              <Button
+                fullWidth
+                sx={{ mb: 1 }}
+                variant={isActive(path) ? "contained" : "outlined"}
+                onClick={() => setOpenMenu(false)}
+              >
+                {name}
+              </Button>
+            </Link>
+          ))}
+
+          <Button fullWidth color="error" onClick={handleLogOut}>
+            Logout
           </Button>
 
-          {/* Mobile Menu */}
-          <div className="md:hidden">
-            <NavigationSheet />
-          </div>
-        </div>
-      </div>
-    </nav>
+          {/* {userInfo ? (
+            <Button fullWidth color="error" onClick={handleLogOut}>
+              Logout
+            </Button>
+          ) : (
+            <AuthButton />
+          )} */}
+        </Box>
+      </Drawer>
+    </Box>
   );
 };
 
