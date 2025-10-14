@@ -40,6 +40,7 @@ const Navbar = () => {
     { name: "Projects", path: "/projects" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact", path: "/contact" },
+    { name: "Dashboard", path: "/dashboard" },
   ];
 
   return (
@@ -105,10 +106,11 @@ const Navbar = () => {
             ))}
 
             {/* Auth button (Desktop) */}
-
-            <Button color="error" onClick={handleLogOut}>
-              Logout
-            </Button>
+            <Link href="/login">
+              <Button color="error" onClick={handleLogOut}>
+                Login
+              </Button>
+            </Link>
 
             {/* {userInfo ? (
               <Button color="error" onClick={handleLogOut}>
