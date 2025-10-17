@@ -1,7 +1,16 @@
-import DashboardDrawer from "@/components/dashboard/dashboardDrawer/DashboardDrawer";
+import { AppSidebar } from "@/components/dashboard/AppSideBar/AppSideBar";
+import Sidebar from "@/components/dashboard/sidebar/Sidebar";
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  return <DashboardDrawer>{children} </DashboardDrawer>;
-};
-
-export default DashboardLayout;
+export default function DashboardLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <main className="min-h-dvh flex gap-4">
+      <Sidebar />
+      {/* <AppSidebar /> */}
+      {children}
+    </main>
+  );
+}

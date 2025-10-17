@@ -1,164 +1,129 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  Typography,
-  IconButton,
-  Drawer,
-} from "@mui/material";
-
-import MenuIcon from "@mui/icons-material/Menu";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import TopNavbar from "./TopNavbar";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Menu, Moon, Sun, X } from "lucide-react";
+import { useTheme } from "@/context/themeContext";
 
-const Navbar = () => {
-  const pathname = usePathname();
-  const router = useRouter();
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+  const pathname = usePathname(); // ✅ detects active page path
 
-  const [openMenu, setOpenMenu] = useState(false);
-
-  const handleLogOut = () => {
-    router.refresh();
-  };
-
-  const isActive = (path: string) => pathname === path;
-
-  // const AuthButton = dynamic(
-  //   () => import("@/components/UI/AuthButton/AuthButton"),
-  //   { ssr: false }
-  // );
-
-  const navLinks = [
+  const navItems = [
     { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
+    { name: "Education", path: "/education" },
+    { name: "Experience", path: "/experience" },
+    { name: "Skills", path: "/skills" },
     { name: "Projects", path: "/projects" },
-    { name: "Blogs", path: "/blogs" },
+    { name: "Services", path: "/services" },
     { name: "Contact", path: "/contact" },
-    { name: "Dashboard", path: "/dashboard" },
+    { name: "Login", path: "/login" },
   ];
 
+  const getSectionColor = (section: string) => {
+    const colorMap: Record<string, string> = {
+      "/": "from-blue-600 to-purple-600",
+      "/services": "from-green-500 to-emerald-500",
+      "/skills": "from-orange-500 to-red-500",
+      "/experience": "from-indigo-500 to-blue-500",
+      "/education": "from-teal-500 to-cyan-500",
+      "/projects": "from-pink-500 to-rose-500",
+      "/contact": "from-gray-600 to-gray-800",
+    };
+    return colorMap[section] || "from-blue-600 to-purple-600";
+  };
+
   return (
-    <Box
-      sx={{
-        position: "sticky",
-        top: 0,
-        zIndex: 1200,
-        backgroundColor: "white",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-      }}
-    >
-      {/* Top Strip */}
-      <TopNavbar />
-
-      {/* Main Navbar */}
-      <Container>
-        <Stack
-          py={2}
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm transition-colors duration-300">
+      <div className="container mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <Typography variant="h5" fontWeight={600}>
-            <Link href="/" passHref>
-              <Box
-                component="span"
-                sx={{ textDecoration: "none", color: "black" }}
-              >
-                Port
-                <Box component="span" color="primary.main">
-                  folio
-                </Box>{" "}
-                Project
-              </Box>
-            </Link>
-          </Typography>
-
-          {/* Mobile Menu Icon */}
-          <Box sx={{ display: { xs: "block", sm: "none" } }}>
-            <IconButton onClick={() => setOpenMenu(true)} color="primary">
-              <MenuIcon />
-            </IconButton>
-          </Box>
-
-          {/* Desktop Nav Links */}
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ display: { xs: "none", sm: "flex" } }}
+          <Link
+            href="/"
+            className={`sm:text-2xl text-xl font-bold bg-gradient-to-r ${getSectionColor(
+              pathname
+            )} bg-clip-text text-transparent transition-all duration-500`}
           >
-            {navLinks.map(({ name, path }) => (
-              <Link key={path} href={path} passHref>
-                <Button
-                  variant={isActive(path) ? "contained" : "outlined"}
-                  color="primary"
-                  size="small"
-                >
-                  {name}
-                </Button>
+            AZIR UDDIN
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex space-x-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.path}
+                onClick={() => setIsMenuOpen(false)}
+                className={`transition-all duration-300 font-medium px-3 py-2 rounded-md ${
+                  pathname === item.path
+                    ? `bg-gradient-to-r ${getSectionColor(
+                        pathname
+                      )} bg-clip-text text-transparent font-bold scale-105`
+                    : "text-foreground hover:text-primary hover:bg-accent/10"
+                }`}
+              >
+                {item.name}
               </Link>
             ))}
+          </nav>
 
-            {/* Auth button (Desktop) */}
-            <Link href="/login">
-              <Button color="error" onClick={handleLogOut}>
-                Login
-              </Button>
-            </Link>
-
-            {/* {userInfo ? (
-              <Button color="error" onClick={handleLogOut}>
-                Logout
-              </Button>
-            ) : (
-              <AuthButton />
-            )} */}
-          </Stack>
-        </Stack>
-      </Container>
-
-      {/* Mobile Drawer */}
-      <Drawer
-        anchor="right"
-        open={openMenu}
-        onClose={() => setOpenMenu(false)}
-        sx={{ display: { xs: "block", sm: "none" } }}
-      >
-        <Box sx={{ width: 250, p: 2 }}>
-          {navLinks.map(({ name, path }) => (
-            <Link key={path} href={path} passHref>
-              <Button
-                fullWidth
-                sx={{ mb: 1 }}
-                variant={isActive(path) ? "contained" : "outlined"}
-                onClick={() => setOpenMenu(false)}
-              >
-                {name}
-              </Button>
-            </Link>
-          ))}
-
-          <Button fullWidth color="error" onClick={handleLogOut}>
-            Logout
-          </Button>
-
-          {/* {userInfo ? (
-            <Button fullWidth color="error" onClick={handleLogOut}>
-              Logout
+          {/* Theme Toggle + Mobile Menu */}
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="text-foreground hover:text-primary hover:bg-accent transition-colors duration-200"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
             </Button>
-          ) : (
-            <AuthButton />
-          )} */}
-        </Box>
-      </Drawer>
-    </Box>
+            <Link href="/login"> Login</Link>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden text-foreground hover:bg-accent"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <nav className="md:hidden mt-4 pb-4 space-y-2 animate-fade-in bg-background/95 rounded-lg border border-border p-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.path}
+                onClick={() => setIsMenuOpen(false)}
+                className={`block w-full text-left py-3 px-4 rounded-md transition-all duration-300 ${
+                  pathname === item.path
+                    ? `bg-gradient-to-r ${getSectionColor(
+                        pathname
+                      )} bg-clip-text text-transparent font-bold`
+                    : "text-foreground hover:text-primary hover:bg-accent/50"
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+        )}
+      </div>
+    </header>
   );
 };
 
-export default Navbar;
+export default Header;

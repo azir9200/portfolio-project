@@ -1,10 +1,13 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import Image from "next/image";
+import login01 from "@/assets/images/login01.jpg";
+import { loginUser } from "@/services/AuthService";
 
 type FormData = {
   email: string;
@@ -18,84 +21,127 @@ const LoginForm = () => {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
+
   const searchParams = useSearchParams();
   const redirect = searchParams.get("callbackUrl");
   const router = useRouter();
+  // const { setIsLoading } = useUser();
 
   const onSubmit = async (data: FormData) => {
-    toast.success("Login successful!");
+    const { email, password } = data;
+
+    try {
+      // setIsLoading(true);
+      const res = await loginUser(data);
+      console.log("login res", res);
+      if (res?.success) {
+        if (redirect) {
+          router.push(redirect);
+          toast.success(res?.message);
+        } else {
+          router.push("/");
+          toast.success(res?.message);
+        }
+      } else {
+        // setIsLoading(false);
+        toast.error(res?.message);
+      }
+    } catch (err: any) {
+      // setIsLoading(false);
+      toast.error(err.message || "Something went wrong!");
+    }
+
+    const users = {
+      admin: { email: "azir@gmail.com", password: "admin123" },
+      user: { email: "user10@gmail.com", password: "" },
+    };
+
+    const role =
+      email === users.admin.email && password === users.admin.password
+        ? "admin"
+        : email === users.user.email && password === users.user.password
+        ? "user"
+        : null;
+
+    if (!role) {
+      toast.error("Invalid email or password!");
+      return;
+    }
+
+    toast.success(`Welcome back, ${role}!`);
     router.push(redirect || "/dashboard");
   };
 
-  const handleDefaultLogin = (type: "admin" | "user" | "premium") => {
+  const handleDefaultLogin = (type: "admin" | "user") => {
     const presets = {
-      admin: { email: "admin1@gmail.com", password: "123456" },
+      admin: { email: "azir@gmail.com", password: "admin123" },
       user: { email: "user10@gmail.com", password: "123456" },
-      premium: { email: "premium@gmail.com", password: "123456" },
     };
     const selected = presets[type];
     setValue("email", selected.email);
     setValue("password", selected.password);
+    toast.info(`Prefilled ${type} credentials`);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-cyan-50 px-4">
-      <div className="flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-        {/* Left Section - Illustration */}
-        <div className="hidden md:flex flex-col justify-center items-center w-1/2 bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-10">
-          <Image
-            src="/login-illustration.svg"
-            alt="Login Illustration"
-            width={400}
-            height={400}
-            className="mb-6"
-          />
-          <h2 className="text-3xl font-semibold mb-2">Welcome Back!</h2>
-          <p className="text-white/80 text-center max-w-sm">
-            Access your account and manage your workspace easily.
-          </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex flex-col lg:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+        {/* === Left Section (Illustration) === */}
+        <div className="flex justify-center items-center w-full lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-500 text-white relative p-8 md:p-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.08),transparent)]" />
+          <div className="relative z-10 text-center">
+            <Image
+              src={login01}
+              alt="Login Illustration"
+              width={350}
+              height={350}
+              className="mx-auto mb-6 rounded-xl object-cover shadow-lg"
+              priority
+            />
+            <h2 className="text-2xl md:text-3xl font-semibold mb-2">
+              Welcome Back!
+            </h2>
+            <p className="text-white/80 text-sm md:text-base max-w-xs md:max-w-sm mx-auto">
+              Sign in to access your dashboard and continue managing your
+              projects.
+            </p>
+          </div>
         </div>
 
-        {/* Right Section - Form */}
-        <div className="flex-1 p-8 md:p-10">
+        {/* === Right Section (Form) === */}
+        <div className="flex-1 p-6 sm:p-8 md:p-10 flex flex-col justify-center">
+          {/* Header */}
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-800">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800">
               Log in to Your Account
             </h2>
             <Link
               href="/"
-              className="text-base font-medium text-indigo-600 hover:text-indigo-700 transition"
+              className="text-sm sm:text-base font-medium text-indigo-600 hover:text-purple-700 transition"
             >
               Home
             </Link>
           </div>
 
-          {/* === Role Buttons === */}
-          <div className="mb-6 grid grid-cols-3 gap-3">
+          {/* Role Buttons */}
+          <div className="mb-6 grid grid-cols-2 gap-3">
             <Button
               type="button"
               onClick={() => handleDefaultLogin("user")}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-gradient-to-br from-indigo-700 to-indigo-500 hover:opacity-90 text-white py-2 text-sm sm:text-base"
             >
-              User
-            </Button>
-            <Button
-              type="button"
-              onClick={() => handleDefaultLogin("premium")}
-              className="bg-purple-600 hover:bg-purple-700 text-white"
-            >
-              Premium
+              Demo User
             </Button>
             <Button
               type="button"
               onClick={() => handleDefaultLogin("admin")}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-gradient-to-br from-purple-700 to-purple-500 hover:opacity-90 text-white py-2 text-sm sm:text-base"
             >
-              Admin
+              Demo Admin
             </Button>
           </div>
 
-          {/* === Form === */}
+          {/* Login Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Email */}
             <div>
@@ -115,7 +161,7 @@ const LoginForm = () => {
                     message: "Invalid email format",
                   },
                 })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm sm:text-base"
                 placeholder="youremail@example.com"
               />
               {errors.email && (
@@ -151,7 +197,7 @@ const LoginForm = () => {
                     message: "Password must be at least 6 characters",
                   },
                 })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm sm:text-base"
                 placeholder="••••••••"
               />
               {errors.password && (
@@ -161,17 +207,19 @@ const LoginForm = () => {
               )}
             </div>
 
+            {/* Submit Button */}
             <Button
               disabled={isSubmitting}
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 sm:py-2.5 rounded-lg text-sm sm:text-base transition"
             >
               {isSubmitting ? "Logging in..." : "Login"}
             </Button>
           </form>
 
+          {/* Signup Link */}
           <div className="text-center mt-6">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600">
               Don&apos;t have an account?{" "}
               <Link
                 href="/signup"

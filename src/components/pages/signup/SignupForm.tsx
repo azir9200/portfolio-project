@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import register01 from "@/assets/images/register01.jpg";
 
 type FormData = {
   name?: string;
@@ -43,26 +44,28 @@ const SignupForm = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-cyan-50 px-4">
-      <div className="max-w-5xl w-full bg-white shadow-xl rounded-2xl overflow-hidden flex flex-col md:flex-row border border-gray-100">
-        {/* Left Section */}
-        <div className="hidden md:flex flex-col justify-center items-center w-1/2 bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-10">
-          <Image
-            src="/signup-illustration.svg"
-            width={400}
-            height={400}
-            alt="Signup Illustration"
-            className="mb-6"
-          />
-          <h2 className="text-3xl font-semibold mb-2">
+      <div className="flex flex-col lg:flex-row w-full max-w-5xl bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-100">
+        {/* === Left Section (Image / Illustration) === */}
+        <div className="relative w-full lg:w-1/2 h-60 sm:h-72 md:h-96 lg:h-auto bg-gradient-to-br from-indigo-600 to-purple-400 flex flex-col justify-center items-center text-white p-8">
+          <div className="relative w-64 h-64 sm:w-72 sm:h-72 mb-4">
+            <Image
+              src={register01}
+              alt="Signup Illustration"
+              fill
+              className="object-contain drop-shadow-xl"
+              priority
+            />
+          </div>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-2">
             Welcome to BrightSpace
           </h2>
-          <p className="text-white/80 text-center max-w-sm">
+          <p className="text-white/80 text-center max-w-sm text-sm md:text-base">
             Join our community and start exploring modern digital experiences.
           </p>
         </div>
 
-        {/* Right Section - Form */}
-        <div className="flex-1 p-8 md:p-10">
+        {/* === Right Section (Form) === */}
+        <div className="flex-1 p-6 sm:p-8 md:p-10 flex flex-col justify-center">
           <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 text-center mb-6">
             Create Your Account
           </h2>
@@ -88,7 +91,7 @@ const SignupForm = () => {
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
-                    value: /^\S+@\S+$/i,
+                    value: /^\S+@\S+\.\S+$/,
                     message: "Enter a valid email",
                   },
                 })}
@@ -204,6 +207,7 @@ const SignupForm = () => {
 
             <Button
               type="submit"
+              disabled={loading}
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition"
             >
               {loading ? "Creating Account..." : "Sign Up"}
