@@ -44,11 +44,8 @@ const EducationPage = () => {
   ];
 
   return (
-    <section
-      id="education"
-      className="py-8 bg-gradient-to-br from-slate-50 to-blue-50"
-    >
-      <div className="container mx-auto md:px-6 px-2">
+    <section id="education" className="relative min-h-screen flex items-center">
+      <div className="container mx-auto pt-28 md:px-6 px-2">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Educational History

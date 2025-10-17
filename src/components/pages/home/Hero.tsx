@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Eye, FileDown, Mail } from "lucide-react";
 import { FaFacebook, FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { Typewriter } from "react-simple-typewriter";
-import Header from "./Header";
+
 import Image from "next/image";
+import HeroImg from "@/assets/images/azir.jpg";
 
 const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center">
-      <Header />
       <div className="container mx-auto px-6 pt-20">
         <div className="flex justify-between items-center md:flex-row flex-col-reverse">
           {/* Left Side - Text Content */}
@@ -18,7 +18,7 @@ const Hero = () => {
             <div className="md:space-y-4 space-y-2">
               <h1 className="text-xl lg:text-4xl font-bold text-gray-900 leading-tight">
                 <span className="text-gray-800">Hi, I&apos;m </span>
-                <h1>Hi, I&apos;m Azir</h1>
+
                 <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   AZIR UDDIN
                 </span>
@@ -53,7 +53,7 @@ const Hero = () => {
             {/* Buttons */}
             <div className="flex flex-wrap gap-4">
               <a
-                href="https://docs.google.com/document/d/1h5Lt2-4ELC_NmUwmUOpKoheGMd1FiHrrqSSJuBN5J6M/edit"
+                href="https://drive.google.com/file/d/1L5VhaDjPLdwGi_K3mB3tqUDanHITF1Nu/view?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -66,7 +66,7 @@ const Hero = () => {
                 </Button>
               </a>
 
-              <a href="#contact">
+              <a href="/contact">
                 <Button
                   variant="outline"
                   size="lg"
@@ -108,7 +108,7 @@ const Hero = () => {
                 <FaWhatsapp className="w-6 h-6" />
               </a>
               <a
-                href="mailto:aziruddinn83@gmail.com"
+                href="https://mail.google.com/mail/u/0/#inbox?compose=new"
                 className="text-gray-600 hover:text-blue-600 transition-colors"
               >
                 <Mail className="w-6 h-6" />
@@ -122,7 +122,7 @@ const Hero = () => {
               <div className="md:w-[400px] md:h-[400px] w-[320px] h-[320px] rounded-full bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 p-1">
                 <div className="w-full h-full rounded-full bg-white p-4">
                   <Image
-                    src="https://i.ibb.co/TDBzHJqC/azir-1.jpg"
+                    src={HeroImg}
                     alt="Portrait of MD Azir Uddin"
                     width={400}
                     height={400}

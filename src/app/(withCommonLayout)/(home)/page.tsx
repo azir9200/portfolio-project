@@ -1,3 +1,4 @@
+import Hero from "@/components/pages/home/Hero";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,9 +9,7 @@ export const metadata: Metadata = {
 const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow">
-        <div className=" max-w-7xl md:mx-auto mx-2 py-12"></div>
-      </main>
+      <Hero />
     </div>
   );
 };

@@ -8,6 +8,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
+    
       <Navbar />
       <main className="min-h-dvh">{children}</main>
       <Footer />
