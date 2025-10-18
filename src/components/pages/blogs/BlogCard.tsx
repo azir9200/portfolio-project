@@ -11,12 +11,15 @@ export default function BlogCard({ blog }: { blog: any }) {
       <div className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
         {blog.thumbnail ? (
           <div className="relative h-56 w-full overflow-hidden">
-            {/* <Image
-              src={post.thumbnail}
-              alt={post.title}
+            <Image
+              src={blog.thumbnail}
+              alt={blog.title}
               fill
+              sizes="(max-width: 768px) 100vw, 
+         (max-width: 1200px) 50vw, 
+         33vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
-            /> */}
+            />
           </div>
         ) : (
           <div className="h-56 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-300">

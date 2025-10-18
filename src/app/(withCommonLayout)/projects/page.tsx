@@ -1,4 +1,4 @@
-import ProjectsPage from "@/components/pages/projects/Projects";
+import ProjectsPage from "@/components/pages/projects/StaticProjects";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Portfolio Project | Projects",
@@ -6,8 +6,13 @@ export const metadata: Metadata = {
 };
 const page = () => {
   return (
-    <div>
-      ProjectsPage
+    <div className="py-24 px-4 max-w-7xl mx-auto">
+      <p>
+        {" "}
+        ProjectsPage ProjectsPage ProjectsPage ProjectsPage ProjectsPage
+        ProjectsPage{" "}
+      </p>
+
       {/* <ProjectsPage /> */}
     </div>
   );

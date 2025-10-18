@@ -21,7 +21,6 @@ const Header = () => {
     { name: "Projects", path: "/projects" },
     { name: "Services", path: "/services" },
     { name: "Contact", path: "/contact" },
-    { name: "Login", path: "/login" },
   ];
 
   const getSectionColor = (section: string) => {
@@ -48,17 +47,11 @@ const Header = () => {
               pathname
             )} bg-clip-text text-transparent transition-all duration-500`}
           >
-            AZIR UDDIN 
+            AZIR UDDIN
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {/* <a
-                            href="https://mail.google.com/mail/u/0/#inbox?compose=new"
-                            className="text-gray-600 hover:text-blue-600 transition-colors"
-                          >
-                            <Mail className="w-6 h-6" />
-                          </a> */}
             {navItems.map((item) => (
               <Link
                 key={item.name}

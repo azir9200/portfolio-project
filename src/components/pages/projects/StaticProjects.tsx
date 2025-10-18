@@ -3,10 +3,10 @@ import { Card } from "@/components/ui/card";
 import { FileText, Globe } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { ProjectDetailsData } from "./ProjectData";
+import { ProjectDetailsData } from "./StaticProjectData";
 import Image from "next/image";
 
-const ProjectsPage = () => {
+const StaticProjectPage = () => {
   return (
     <section id="projects" className="py-20 bg-white">
       <div className="container mx-auto px-6">
@@ -28,7 +28,7 @@ const ProjectsPage = () => {
             >
               <div className="relative overflow-hidden">
                 <Image
-                  src={project.images[0]}
+                  src={project.image[0]}
                   alt={project.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
@@ -85,4 +85,4 @@ const ProjectsPage = () => {
   );
 };
 
-export default ProjectsPage;
+export default StaticProjectPage;
