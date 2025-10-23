@@ -57,10 +57,10 @@ const SignupForm = () => {
             />
           </div>
           <h2 className="text-2xl md:text-3xl font-semibold mb-2">
-            Welcome to BrightSpace
+            Welcome to Portfolio Project
           </h2>
           <p className="text-white/80 text-center max-w-sm text-sm md:text-base">
-            Join our community and start exploring modern digital experiences.
+            Please explore my web page and make a give me a feedback.
           </p>
         </div>
 

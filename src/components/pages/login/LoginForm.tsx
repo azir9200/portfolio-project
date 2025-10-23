@@ -31,47 +31,20 @@ const LoginForm = () => {
     const { email, password } = data;
 
     try {
-      // setIsLoading(true);
+      console.log(data, "login data");
       const res = await loginUser(data);
       console.log("login res", res);
-      // if (res?.success) {
-      //   if (redirect) {
-      //     router.push(redirect);
-      //     toast.success(res?.message);
-      //   } else {
-      //     router.push("/");
-      //     toast.success(res?.message);
-      //   }
-      // } else {
-      //   // setIsLoading(false);
-      //   toast.error(res?.message);
-      // }
+      if (res?.success) {
+        toast.success(res?.message || "Login successful!");
+        router.push("/dashboard");
+      } else {
+        toast.error(res?.message || "Invalid credentials!");
+      }
     } catch (err: any) {
       // setIsLoading(false);
       toast.error(err.message || "Something went wrong!");
     }
-
-    const users = {
-      admin: { email: "azir@gmail.com", password: "admin123" },
-      user: { email: "user10@gmail.com", password: "" },
-    };
-
-    const role =
-      email === users.admin.email && password === users.admin.password
-        ? "admin"
-        : email === users.user.email && password === users.user.password
-        ? "user"
-        : null;
-
-    if (!role) {
-      toast.error("Invalid email or password!");
-      return;
-    }
-
-    toast.success(`Welcome back, ${role}!`);
-    router.push(redirect || "/dashboard");
   };
-
   const handleDefaultLogin = (type: "admin" | "user") => {
     const presets = {
       admin: { email: "azir@gmail.com", password: "admin123" },
@@ -80,7 +53,6 @@ const LoginForm = () => {
     const selected = presets[type];
     setValue("email", selected.email);
     setValue("password", selected.password);
-    toast.info(`Prefilled ${type} credentials`);
   };
 
   return (

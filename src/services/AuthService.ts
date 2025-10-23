@@ -27,7 +27,7 @@ export const SignUpUser = async (userData: FieldValues) => {
   }
 };
 
-export const loginUser = async (userData: FieldValues) => {
+export const loginUser = async (userData: any) => {
   try {
     const res = await fetch(`http://localhost:5000/api/v1/auth/login`, {
       method: "POST",
@@ -39,20 +39,19 @@ export const loginUser = async (userData: FieldValues) => {
 
     const result = await res.json();
 
+    // ✅ If success, save token to localStorage or cookies (client-side)
     if (result?.success) {
       (await cookies()).set("accessToken", result?.data?.accessToken);
       (await cookies()).set("refreshToken", result?.data?.refreshToken);
-      // 👇 Debug log
-      console.log("Access Token:", result.data.accessToken);
-      console.log("Refresh Token:", result.data.refreshToken);
-      revalidateTag("loginUser");
     }
 
     return result;
-  } catch (error: any) {
-    throw new Error(error.message || "Login failed");
+  } catch (error) {
+    console.error("Login failed:", error);
+    throw error;
   }
 };
+
 export const verifyUser = async (id: string) => {
   try {
     const res = await fetch(
@@ -94,7 +93,7 @@ export const dashbaordOverview = async (): Promise<any> => {
           "Content-Type": "application/json",
         },
         next: {
-          tags: ["loginUser", "post"],
+          tags: ["loginUser", "post", "category"],
         },
       }
     );

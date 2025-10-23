@@ -1,5 +1,12 @@
+import BlogsPage from "@/components/pages/blogs/BlogsPage";
+import ContactPage from "@/components/pages/contact/ContactPage";
+import EducationPage from "@/components/pages/education/EducationPage";
 import Hero from "@/components/pages/home/Hero";
+import ProjectsPage from "@/components/pages/projects/ProjectsPage";
+import ServicesPage from "@/components/pages/services/ServicesPage";
+import SkillsPage from "@/components/pages/skills/SkillsPage";
 import { Metadata } from "next";
+import Experience from "../experience/page";
 
 export const metadata: Metadata = {
   title: "Portfolio Project | Home",
@@ -10,6 +17,13 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Hero />
+      <Experience />
+      <SkillsPage />
+      <ProjectsPage />
+      <ServicesPage />
+      <EducationPage />
+      <BlogsPage />
+      <ContactPage />
     </div>
   );
 };
