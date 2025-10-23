@@ -20,7 +20,7 @@ export const SignUpUser = async (userData: FieldValues) => {
     );
     const result = await res.json();
     console.log(result);
-   
+
     return result;
   } catch (error: any) {
     return Error(error);
@@ -29,7 +29,7 @@ export const SignUpUser = async (userData: FieldValues) => {
 
 export const loginUser = async (userData: FieldValues) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/login`, {
+    const res = await fetch(`http://localhost:5000/api/v1/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,18 +38,19 @@ export const loginUser = async (userData: FieldValues) => {
     });
 
     const result = await res.json();
-    console.log(res);
 
     if (result?.success) {
       (await cookies()).set("accessToken", result?.data?.accessToken);
       (await cookies()).set("refreshToken", result?.data?.refreshToken);
-
+      // 👇 Debug log
+      console.log("Access Token:", result.data.accessToken);
+      console.log("Refresh Token:", result.data.refreshToken);
       revalidateTag("loginUser");
     }
 
     return result;
   } catch (error: any) {
-    return Error(error);
+    throw new Error(error.message || "Login failed");
   }
 };
 export const verifyUser = async (id: string) => {
@@ -79,7 +80,6 @@ export const verifyUser = async (id: string) => {
   }
 };
 
-
 export const dashbaordOverview = async (): Promise<any> => {
   const token = (await cookies()).get("accessToken")!.value;
 
@@ -94,7 +94,7 @@ export const dashbaordOverview = async (): Promise<any> => {
           "Content-Type": "application/json",
         },
         next: {
-          tags: ["loginUser", "post", "category"],
+          tags: ["loginUser", "post"],
         },
       }
     );
@@ -105,9 +105,6 @@ export const dashbaordOverview = async (): Promise<any> => {
     throw new Error(error.message || "Something went wrong");
   }
 };
-
-
-
 
 export const getCurrentUser = async () => {
   const accessToken = (await cookies()).get("accessToken")?.value;

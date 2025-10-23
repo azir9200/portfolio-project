@@ -34,18 +34,18 @@ const LoginForm = () => {
       // setIsLoading(true);
       const res = await loginUser(data);
       console.log("login res", res);
-      if (res?.success) {
-        if (redirect) {
-          router.push(redirect);
-          toast.success(res?.message);
-        } else {
-          router.push("/");
-          toast.success(res?.message);
-        }
-      } else {
-        // setIsLoading(false);
-        toast.error(res?.message);
-      }
+      // if (res?.success) {
+      //   if (redirect) {
+      //     router.push(redirect);
+      //     toast.success(res?.message);
+      //   } else {
+      //     router.push("/");
+      //     toast.success(res?.message);
+      //   }
+      // } else {
+      //   // setIsLoading(false);
+      //   toast.error(res?.message);
+      // }
     } catch (err: any) {
       // setIsLoading(false);
       toast.error(err.message || "Something went wrong!");
