@@ -13,8 +13,6 @@ const BlogDetailsCard = ({ blog }: { blog: BlogWithAuthor }) => {
     );
   }
 
-  console.log("blog details page", blog);
-
   return (
     <main className="max-w-4xl mx-auto py-20 px-4">
       {/* Blog Title */}

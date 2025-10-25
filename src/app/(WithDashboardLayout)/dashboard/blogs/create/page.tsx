@@ -27,29 +27,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { blogSchema } from "@/type";
+import { BlogWithAuthor, TBlog } from "@/type/BlogType";
 import { Edit, Loader2, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const blogSchema = z.object({
-  title: z.string().min(1, "Title is required").max(200, "Title too long"),
-  slug: z
-    .string()
-    .min(1, "Slug is required")
-    .regex(/^[a-z0-9-]+$/, "Slug must be lowercase with hyphens only"),
-  excerpt: z.string().max(300, "Excerpt too long").optional(),
-  content: z.string().min(1, "Content is required"),
-  thumbnail: z.string().url("Invalid URL").optional().or(z.literal("")),
-  tags: z.string().optional(),
-});
-
 export default function BlogManager() {
   const [isOpen, setIsOpen] = useState(false);
-  const [blogs, setBlogs] = useState<{ data: any[] }>({ data: [] });
+  const [blogs, setBlogs] = useState<{ data: BlogWithAuthor[] }>({ data: [] });
   const [loading, setLoading] = useState(true);
-  const [editingBlog, setEditingBlog] = useState<any>(null);
+  const [editingBlog, setEditingBlog] = useState<BlogWithAuthor | null>(null);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -97,11 +87,11 @@ export default function BlogManager() {
 
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", "BDsmartLeadX"); // 🔁 replace with your Cloudinary preset
+    data.append("upload_preset", "Azir-uploads"); // 🔁 replace with your Cloudinary preset
 
     try {
       const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dvqnxxurv/image/upload",
+        "https://api.cloudinary.com/v1_1/dft2gbhxw/image/upload",
         {
           method: "POST",
           body: data,
@@ -158,6 +148,7 @@ export default function BlogManager() {
       setBlogs(refreshed);
       setIsOpen(false);
       resetForm();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
     } finally {
@@ -166,7 +157,7 @@ export default function BlogManager() {
   };
 
   //  Handle Edit
-  const handleEdit = (blog: any) => {
+  const handleEdit = (blog: BlogWithAuthor) => {
     setEditingBlog(blog);
     setFormData({
       title: blog.title,
@@ -326,7 +317,7 @@ export default function BlogManager() {
         </div>
       ) : blogs?.data?.length > 0 ? (
         <div className="grid gap-4">
-          {blogs?.data?.map((blog: any) => (
+          {blogs?.data?.map((blog: BlogWithAuthor) => (
             <Card key={blog.id} className="glass-effect hover-lift">
               <CardHeader>
                 <div className="flex justify-between items-start">
@@ -335,7 +326,7 @@ export default function BlogManager() {
                     <CardDescription className="mt-2">
                       {blog.excerpt || "No excerpt"}
                     </CardDescription>
-                    {blog?.tags?.length > 0 && (
+                    {(blog?.tags?.length as number) > 0 && (
                       <div className="flex flex-wrap gap-2 mt-2">
                         {blog?.tags?.map((tag: string) => (
                           <Badge key={tag}>{tag}</Badge>

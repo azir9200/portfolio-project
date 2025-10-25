@@ -22,9 +22,6 @@ const BlogsPage = async () => {
         {blogs?.map((blog: TBlog) => (
           <BlogCard key={blog?.id} blog={blog} />
         ))}
-        {/* {blogs?.slice(0, 3)?.map((blog: TBlog) => (
-          <BlogCard key={blog?.id} blog={blog} />
-        ))} */}
       </div>
     </div>
   );

@@ -40,6 +40,7 @@ const LoginForm = () => {
       } else {
         toast.error(res?.message || "Invalid credentials!");
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       // setIsLoading(false);
       toast.error(err.message || "Something went wrong!");

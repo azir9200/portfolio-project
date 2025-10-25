@@ -30,12 +30,13 @@ import { Edit, Loader2, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { projectSchema } from "./projectHelper";
+import { TProject } from "@/type/projectType";
 
 export default function ProjectManager() {
   const [isOpen, setIsOpen] = useState(false);
-  const [projects, setProjects] = useState<{ data: any[] }>({ data: [] });
+  const [projects, setProjects] = useState<{ data: TProject[] }>({ data: [] });
   const [isLoading, setIsLoading] = useState(true);
-  const [editingProject, setEditingProject] = useState<any>(null);
+  const [editingProject, setEditingProject] = useState<TProject | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     title: "",
@@ -79,7 +80,7 @@ export default function ProjectManager() {
   }, []);
 
   // ✅ Handle edit
-  const handleEdit = (project: any) => {
+  const handleEdit = (project: TProject) => {
     setEditingProject(project);
     setFormData({
       title: project.title,
@@ -152,6 +153,7 @@ export default function ProjectManager() {
       setProjects(updated);
       setIsOpen(false);
       resetForm();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
     }
@@ -353,7 +355,7 @@ export default function ProjectManager() {
         </div>
       ) : projects.data.length > 0 ? (
         <div className="grid gap-4">
-          {projects?.data.map((project: any) => (
+          {projects?.data.map((project: TProject) => (
             <Card key={project.id} className="glass-effect hover-lift">
               {project.image && (
                 <Image

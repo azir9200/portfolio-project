@@ -1,5 +1,6 @@
 "use server";
 
+import { TCreateProjectInput, TProject } from "@/type/projectType";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 const BASE_API = "http://localhost:5000/api/v1";
@@ -15,7 +16,7 @@ export async function getProjects() {
 }
 
 // 🟢 Create
-export async function createProject(formData: any) {
+export async function createProject(formData: TCreateProjectInput) {
   console.log(formData, "formData");
 
   try {
@@ -48,7 +49,10 @@ export async function createProject(formData: any) {
 }
 
 // 🟢 Update
-export async function updateProject(id: string, formData: any) {
+export async function updateProject(
+  id: string,
+  formData: Partial<TCreateProjectInput>
+) {
   const res = await fetch(`${BASE_API}/project/${id}`, {
     method: "PATCH",
     headers: {
