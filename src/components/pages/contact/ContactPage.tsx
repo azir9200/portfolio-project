@@ -42,7 +42,10 @@ const ContactPage = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-950 text-gray-100 py-16 px-6 md:px-12">
+    <section
+      id="contact"
+      className=" bg-gradient-to-b from-gray-900 to-gray-950 text-gray-100 py-10 px-6 md:px-12"
+    >
       {/* Header */}
       <div className="max-w-3xl mx-auto text-center">
         <motion.h1
@@ -134,13 +137,10 @@ const ContactPage = () => {
       </motion.form>
 
       {/* Contact Info */}
-      <div className="max-w-4xl mx-auto mt-20 text-center">
+      <div className="max-w-4xl mx-auto mt-10 text-center">
         <p className="text-gray-400">
           Or reach me directly via{" "}
-          <a
-            href="mailto:youremail@example.com"
-            className="text-primary hover:underline"
-          >
+          <a href="mailto:youremail@example.com" className=" hover:underline">
             youremail@example.com
           </a>
         </p>

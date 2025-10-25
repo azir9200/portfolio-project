@@ -1,13 +1,13 @@
 "use client";
 
+import login01 from "@/assets/images/login01.jpg";
 import { Button } from "@/components/ui/button";
+import { loginUser } from "@/services/AuthService";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import Image from "next/image";
-import login01 from "@/assets/images/login01.jpg";
-import { loginUser } from "@/services/AuthService";
 
 type FormData = {
   email: string;
@@ -23,29 +23,30 @@ const LoginForm = () => {
   } = useForm<FormData>();
 
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("callbackUrl");
   const router = useRouter();
   // const { setIsLoading } = useUser();
 
   const onSubmit = async (data: FormData) => {
-    const { email, password } = data;
-
     try {
       console.log(data, "login data");
       const res = await loginUser(data);
       console.log("login res", res);
+
       if (res?.success) {
+        // ✅ assuming your backend returns success flag
         toast.success(res?.message || "Login successful!");
+
+        // ✅ Redirect to dashboard
         router.push("/dashboard");
       } else {
         toast.error(res?.message || "Invalid credentials!");
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      // setIsLoading(false);
-      toast.error(err.message || "Something went wrong!");
+    } catch (err) {
+      const typedError = err as Error;
+      toast.error("Something went wrong!");
     }
   };
+
   const handleDefaultLogin = (type: "admin" | "user") => {
     const presets = {
       admin: { email: "azir@gmail.com", password: "admin123" },
@@ -189,19 +190,6 @@ const LoginForm = () => {
               {isSubmitting ? "Logging in..." : "Login"}
             </Button>
           </form>
-
-          {/* Signup Link */}
-          <div className="text-center mt-6">
-            <p className="text-sm sm:text-base text-gray-600">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/signup"
-                className="text-indigo-600 hover:text-indigo-700 font-medium"
-              >
-                Sign up
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
     </div>

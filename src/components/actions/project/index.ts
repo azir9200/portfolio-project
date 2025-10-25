@@ -1,22 +1,24 @@
 "use server";
 
-import { TCreateProjectInput, TProject } from "@/type/projectType";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-const BASE_API = "http://localhost:5000/api/v1";
+const BASE_API = "https://portfolio-auth-data.vercel.app/api/v1";
 
 // 🟢 Get All
 export async function getProjects() {
-  const res = await fetch(`http://localhost:5000/api/v1/project`, {
-    cache: "no-store",
-  });
-  console.log("get all projects", res);
+  const res = await fetch(
+    `https://portfolio-auth-data.vercel.app/api/v1/project`,
+    {
+      cache: "no-store",
+    }
+  );
   if (!res.ok) throw new Error("Failed to fetch projects");
   return res.json();
 }
 
 // 🟢 Create
-export async function createProject(formData: TCreateProjectInput) {
+
+export async function createProject(formData: any) {
   console.log(formData, "formData");
 
   try {
@@ -49,10 +51,7 @@ export async function createProject(formData: TCreateProjectInput) {
 }
 
 // 🟢 Update
-export async function updateProject(
-  id: string,
-  formData: Partial<TCreateProjectInput>
-) {
+export async function updateProject(id: string, formData: any) {
   const res = await fetch(`${BASE_API}/project/${id}`, {
     method: "PATCH",
     headers: {

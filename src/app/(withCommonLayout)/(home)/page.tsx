@@ -1,12 +1,12 @@
 import BlogsPage from "@/components/pages/blogs/BlogsPage";
 import ContactPage from "@/components/pages/contact/ContactPage";
 import EducationPage from "@/components/pages/education/EducationPage";
+import Experience from "@/components/pages/experience/ExperiencePage";
 import Hero from "@/components/pages/home/Hero";
 import ProjectsPage from "@/components/pages/projects/ProjectsPage";
 import ServicesPage from "@/components/pages/services/ServicesPage";
 import SkillsPage from "@/components/pages/skills/SkillsPage";
 import { Metadata } from "next";
-import Experience from "../experience/page";
 
 export const metadata: Metadata = {
   title: "Portfolio Project | Home",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen">
       <Hero />
       <Experience />
       <SkillsPage />

@@ -16,10 +16,10 @@ const Header = () => {
     { name: "Home", href: "#home" },
     { name: "Experience", href: "#experience" },
     { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#project" },
+    { name: "Projects", href: "#projects" },
     { name: "Services", href: "#services" },
     { name: "Education", href: "#education" },
-    { name: "Blogs", href: "#blogs" },
+    { name: "Blog", href: "#blog" },
     { name: "Contact", href: "#contact" },
   ];
 

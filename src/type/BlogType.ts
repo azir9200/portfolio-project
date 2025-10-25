@@ -5,14 +5,14 @@ export type TUser = {
   name: string;
   email: string;
   role: "OWNER" | "USER";
-  createdAt?: Date;
-  updatedAt?: Date;
-  blogs?: string[];
-  projects?: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  blogs: string[];
+  projects: string[];
 };
 
 export type TBlog = {
-  id: string;
+  id?: string;
   title: string;
   slug: string;
   content: string;
@@ -20,5 +20,4 @@ export type TBlog = {
   tags?: string[];
   authorId?: string;
   author?: TUser;
-  excerpt?: string;
 };

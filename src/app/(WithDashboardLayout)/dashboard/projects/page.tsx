@@ -26,17 +26,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ApiError, ProjectsResponse } from "@/types";
 import { Edit, Loader2, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { projectSchema } from "./projectHelper";
-import { TProject } from "@/type/projectType";
+import { z } from "zod";
+
+// ✅ Validation schema (sync with backend)
+const projectSchema = z.object({
+  title: z.string().min(1, "Title is required").max(200, "Title too long"),
+  slug: z
+    .string()
+    .min(1, "Slug is required")
+    .regex(/^[a-z0-9-]+$/, "Slug must be lowercase with hyphens only"),
+  description: z.string().min(1, "Description is required"),
+  image: z.string().optional(),
+  liveLink: z.string().optional(),
+  githubLink: z.string().optional(),
+  features: z.string().optional(),
+  technologies: z.string().optional(),
+});
 
 export default function ProjectManager() {
   const [isOpen, setIsOpen] = useState(false);
-  const [projects, setProjects] = useState<{ data: TProject[] }>({ data: [] });
-  const [isLoading, setIsLoading] = useState(true);
-  const [editingProject, setEditingProject] = useState<TProject | null>(null);
+  const [projects, setProjects] = useState<ProjectsResponse>({ data: [] });
+  const [loading, setLoading] = useState(false);
+  const [editingProject, setEditingProject] = useState<any | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     title: "",
@@ -49,7 +64,7 @@ export default function ProjectManager() {
     technologies: "",
   });
 
-  //  Reset form
+  // ✅ Reset form
   const resetForm = () => {
     setFormData({
       title: "",
@@ -74,13 +89,13 @@ export default function ProjectManager() {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     })();
   }, []);
 
   // ✅ Handle edit
-  const handleEdit = (project: TProject) => {
+  const handleEdit = (project: any) => {
     setEditingProject(project);
     setFormData({
       title: project.title,
@@ -102,11 +117,11 @@ export default function ProjectManager() {
 
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", "BDsmartLeadX");
+    data.append("upload_preset", "Azir-uploads");
 
     try {
       const res = await fetch(
-        `https://api.cloudinary.com/v1_1/dvqnxxurv/image/upload`,
+        `https://api.cloudinary.com/v1_1/dft2gbhxw/image/upload`,
         { method: "POST", body: data }
       );
 
@@ -119,7 +134,7 @@ export default function ProjectManager() {
     }
   };
 
-  //  Handle form submit (Create or Update)
+  // ✅ Handle form submit (Create or Update)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -127,6 +142,7 @@ export default function ProjectManager() {
       const parsed = projectSchema.parse(formData);
       setErrors({});
 
+      // Convert string inputs to arrays before sending to backend
       const payload = {
         ...parsed,
         features: parsed.features
@@ -153,8 +169,8 @@ export default function ProjectManager() {
       setProjects(updated);
       setIsOpen(false);
       resetForm();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+    } catch (error) {
+      const typedError = error as ApiError;
       console.log(error);
     }
   };
@@ -260,6 +276,8 @@ export default function ProjectManager() {
                 {formData.image ? (
                   <div className="flex flex-col items-start gap-2">
                     <Image
+                      height={500}
+                      width={500}
                       src={formData.image}
                       alt="Preview"
                       className="w-32 h-32 object-cover rounded-md border"
@@ -349,16 +367,18 @@ export default function ProjectManager() {
       </div>
 
       {/* Projects List */}
-      {isLoading ? (
+      {loading ? (
         <div className="flex justify-center p-12">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
       ) : projects.data.length > 0 ? (
         <div className="grid gap-4">
-          {projects?.data.map((project: TProject) => (
+          {projects?.data.map((project: any) => (
             <Card key={project.id} className="glass-effect hover-lift">
               {project.image && (
                 <Image
+                  height={500}
+                  width={800}
                   src={project.image}
                   alt={project.title}
                   className="w-full h-48 object-cover rounded-t-lg"

@@ -1,10 +1,9 @@
 import { getBlogById } from "@/components/actions/blog/BlogById";
 import BlogDetailsCard from "@/components/pages/blogs/BlogDetailsCard";
 import { TBlog } from "@/type/BlogType";
-import React from "react";
 
 export const generateStaticParams = async () => {
-  const res = await fetch(`http://localhost:5000/api/v1/blog`);
+  const res = await fetch(`https://portfolio-auth-data.vercel.app/api/v1/blog`);
   const { data: blogs } = await res.json();
 
   return blogs.slice(0, 2).map((blog: TBlog) => ({

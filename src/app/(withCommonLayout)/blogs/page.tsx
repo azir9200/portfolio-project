@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 const Blogs = () => {
   return (
     <div className="container mx-auto pt-8 md:px-6 px-2">
-     
+      <p>Blog PAGE ARE HERE</p>
       <BlogsPage />
     </div>
   );

@@ -6,7 +6,7 @@ import {
   getAllBlog,
   UpdateBlog,
 } from "@/components/actions/blog";
-
+// import { createBlog, deleteBlog, getBlogs, updateBlog } from "@/actions/blog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,19 +27,30 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { blogSchema } from "@/type";
-import { BlogWithAuthor, TBlog } from "@/type/BlogType";
+import { ApiError } from "@/types";
 import { Edit, Loader2, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 
+const blogSchema = z.object({
+  title: z.string().min(1, "Title is required").max(200, "Title too long"),
+  slug: z
+    .string()
+    .min(1, "Slug is required")
+    .regex(/^[a-z0-9-]+$/, "Slug must be lowercase with hyphens only"),
+  excerpt: z.string().max(300, "Excerpt too long").optional(),
+  content: z.string().min(1, "Content is required"),
+  thumbnail: z.string().url("Invalid URL").optional().or(z.literal("")),
+  tags: z.string().optional(),
+});
+
 export default function BlogManager() {
   const [isOpen, setIsOpen] = useState(false);
-  const [blogs, setBlogs] = useState<{ data: BlogWithAuthor[] }>({ data: [] });
-  const [loading, setLoading] = useState(true);
-  const [editingBlog, setEditingBlog] = useState<BlogWithAuthor | null>(null);
+  const [blogs, setBlogs] = useState<any>({ data: [] });
+  const [loading, setLoading] = useState(false);
+  const [editingBlog, setEditingBlog] = useState<any | null>(null);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -91,7 +102,7 @@ export default function BlogManager() {
 
     try {
       const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dft2gbhxw/image/upload",
+        "https://api.cloudinary.com/v1_1/dft2gbhxw/image/upload", // 🔁 replace with your cloud name
         {
           method: "POST",
           body: data,
@@ -110,7 +121,7 @@ export default function BlogManager() {
     }
   };
 
-  //  Handle Submit (Fixed)
+  // ✅ Handle Submit (Fixed)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -119,7 +130,7 @@ export default function BlogManager() {
       setErrors({});
       setLoading(true);
 
-      //  Convert tags to array before sending
+      // ✅ Convert tags to array before sending
       const formattedData = {
         ...formData,
         tags:
@@ -128,13 +139,12 @@ export default function BlogManager() {
             : [],
       };
 
-      // Add logged-in user’s ID (if available)
-
+      // ✅ Add logged-in user’s ID (if available)
+      // Replace with your actual user context or token decode logic
       const currentUserId = "USER_ID_HERE"; // dynamically replace this
       const payload = { ...formattedData, authorId: currentUserId };
 
       if (editingBlog) {
-        console.log(editingBlog.id, payload);
         const res = await UpdateBlog(payload, editingBlog.id);
         console.log(res);
         toast.success("Blog updated successfully");
@@ -143,21 +153,21 @@ export default function BlogManager() {
         toast.success("Blog created successfully");
       }
 
-      //  Refresh blog list
+      // ✅ Refresh blog list
       const refreshed = await getAllBlog();
       setBlogs(refreshed);
       setIsOpen(false);
       resetForm();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+    } catch (error) {
+      const typedError = error as ApiError;
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
 
-  //  Handle Edit
-  const handleEdit = (blog: BlogWithAuthor) => {
+  // ✅ Handle Edit
+  const handleEdit = (blog: any) => {
     setEditingBlog(blog);
     setFormData({
       title: blog.title,
@@ -169,7 +179,7 @@ export default function BlogManager() {
     setIsOpen(true);
   };
 
-  // Handle Delete
+  // ✅ Handle Delete
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this blog?")) return;
     try {
@@ -258,11 +268,13 @@ export default function BlogManager() {
                 />
               </div>
 
-              {/* Image Upload */}
+              {/* ✅ Image Upload */}
               <div>
                 <Label>Thumbnail Image</Label>
                 {formData.thumbnail && (
                   <Image
+                    width={128}
+                    height={128}
                     src={formData.thumbnail}
                     alt="Thumbnail Preview"
                     className="w-32 h-32 object-cover rounded-md mb-2 border"
@@ -317,7 +329,7 @@ export default function BlogManager() {
         </div>
       ) : blogs?.data?.length > 0 ? (
         <div className="grid gap-4">
-          {blogs?.data?.map((blog: BlogWithAuthor) => (
+          {blogs?.data?.map((blog: any) => (
             <Card key={blog.id} className="glass-effect hover-lift">
               <CardHeader>
                 <div className="flex justify-between items-start">
@@ -326,7 +338,7 @@ export default function BlogManager() {
                     <CardDescription className="mt-2">
                       {blog.excerpt || "No excerpt"}
                     </CardDescription>
-                    {(blog?.tags?.length as number) > 0 && (
+                    {blog?.tags?.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-2">
                         {blog?.tags?.map((tag: string) => (
                           <Badge key={tag}>{tag}</Badge>
