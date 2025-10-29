@@ -3,6 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BlogManager from "./blogs/create/page";
 import ProjectManager from "./projects/page";
 
+import LogoutButton from "@/services/logoutButton";
+
 const Dashboard = () => {
   return (
     <div className="min-h-screen w-full">
@@ -11,11 +13,16 @@ const Dashboard = () => {
 
       <main className="pt-20 pb-16">
         <div className="container mx-auto px-4">
-          <div className="mb-8 animate-fade-in">
-            <h1 className="mb-2 text-4xl font-semibold mt-4">Dashboard</h1>
-            <p className="text-muted-foreground ">
-              Manage your portfolio content
-            </p>
+          <div className="mb-8 animate-fade-in flex justify-between">
+            <div>
+              <h1 className="mb-2 text-4xl font-semibold mt-4">Dashboard</h1>
+              <p className="text-muted-foreground ">
+                Manage your portfolio content
+              </p>
+            </div>
+            <div>
+              <LogoutButton />
+            </div>
           </div>
 
           <Tabs defaultValue="blogs" className="space-y-6">

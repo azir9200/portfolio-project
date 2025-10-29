@@ -29,16 +29,13 @@ export const SignUpUser = async (userData: FieldValues) => {
 
 export const loginUser = async (userData: UserData) => {
   try {
-    const res = await fetch(
-      `https://portfolio-auth-data.vercel.app/api/v1/auth/login`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      }
-    );
+    const res = await fetch(`http://localhost:5000/api/v1/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
 
     const result = await res.json();
 

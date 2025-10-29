@@ -2,16 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-const BASE_API = "https://portfolio-auth-data.vercel.app/api/v1";
+const BASE_API = "http://localhost:5000/api/v1";
 
 // 🟢 Get All
 export async function getProjects() {
-  const res = await fetch(
-    `https://portfolio-auth-data.vercel.app/api/v1/project`,
-    {
-      cache: "no-store",
-    }
-  );
+  const res = await fetch(`http://localhost:5000/api/v1/project`, {
+    cache: "no-store",
+  });
   if (!res.ok) throw new Error("Failed to fetch projects");
   return res.json();
 }
@@ -22,7 +19,9 @@ export async function createProject(formData: any) {
   console.log(formData, "formData");
 
   try {
-    const res = await fetch(`${BASE_API}/project`, {
+    const res = await fetch(`http://localhost:5000/api/v1/project`, {
+      // const res = await fetch(`${BASE_API}/project`, {
+
       method: "POST",
       headers: {
         Authorization: `${(await cookies()).get("accessToken")?.value || ""}`,
@@ -35,7 +34,7 @@ export async function createProject(formData: any) {
     const data = await res.json().catch(() => null);
 
     if (!res.ok) {
-      console.error("❌ Project creation failed:", data || res.statusText);
+      console.error(" Project creation failed:", data || res.statusText);
       throw new Error(
         data?.message || `Request failed with status ${res.status}`
       );
@@ -45,7 +44,7 @@ export async function createProject(formData: any) {
     revalidatePath("/dashboard/projects");
     return data;
   } catch (error) {
-    console.error("🔥 createProject error:", error);
+    console.error(" createProject error:", error);
     throw error;
   }
 }
