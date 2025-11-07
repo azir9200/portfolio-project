@@ -6,6 +6,7 @@ import Hero from "@/components/pages/home/Hero";
 import ProjectsPage from "@/components/pages/projects/ProjectsPage";
 import ServicesPage from "@/components/pages/services/ServicesPage";
 import SkillsPage from "@/components/pages/skills/SkillsPage";
+import ParticleBackground from "@/components/partialBackground/PartialBackground";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 const HomePage = () => {
   return (
     <div className="min-h-screen">
+      <ParticleBackground />
       <Hero />
       <Experience />
       <SkillsPage />

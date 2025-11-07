@@ -33,6 +33,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 
 const blogSchema = z.object({
   title: z.string().min(1, "Title is required").max(200, "Title too long"),
@@ -139,9 +140,7 @@ export default function BlogManager() {
             : [],
       };
 
-      // ✅ Add logged-in user’s ID (if available)
-      // Replace with your actual user context or token decode logic
-      const currentUserId = "USER_ID_HERE"; // dynamically replace this
+      const currentUserId = "USER_ID_HERE";
       const payload = { ...formattedData, authorId: currentUserId };
 
       if (editingBlog) {
@@ -153,7 +152,6 @@ export default function BlogManager() {
         toast.success("Blog created successfully");
       }
 
-      // ✅ Refresh blog list
       const refreshed = await getAllBlog();
       setBlogs(refreshed);
       setIsOpen(false);
@@ -266,6 +264,22 @@ export default function BlogManager() {
                   rows={8}
                   placeholder="Your blog content..."
                 />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="content">Content *</Label>
+                <RichTextEditor
+                  value={formData.content}
+                  onChange={(value) =>
+                    setFormData({ ...formData, content: value })
+                  }
+                  placeholder="Write your blog content here..."
+                  className={
+                    errors.content ? "border-destructive rounded-md" : ""
+                  }
+                />
+                {errors.content && (
+                  <p className="text-sm text-destructive">{errors.content}</p>
+                )}
               </div>
 
               {/* ✅ Image Upload */}
