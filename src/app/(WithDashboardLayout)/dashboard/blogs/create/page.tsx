@@ -6,6 +6,7 @@ import {
   getAllBlog,
   UpdateBlog,
 } from "@/components/actions/blog";
+import { UploadImage } from "@/components/pages/blogs/handleUploadImage";
 // import { createBlog, deleteBlog, getBlogs, updateBlog } from "@/actions/blog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,14 +27,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { ApiError } from "@/types";
 import { Edit, Loader2, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { RichTextEditor } from "@/components/ui/rich-text-editor";
 
 const blogSchema = z.object({
   title: z.string().min(1, "Title is required").max(200, "Title too long"),
@@ -97,23 +97,25 @@ export default function BlogManager() {
     if (!file) return;
     setUploading(true);
 
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "Azir-uploads"); // 🔁 replace with your Cloudinary preset
+    const maxSizeMB = 2;
+    const maxSizeBytes = maxSizeMB * 1024 * 1024;
+
+    if (file.size > maxSizeBytes) {
+      toast.error(
+        `Image is too large. Please upload an image under ${maxSizeMB}MB.`
+      );
+      e.target.value = "";
+      return;
+    }
 
     try {
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dft2gbhxw/image/upload", // 🔁 replace with your cloud name
-        {
-          method: "POST",
-          body: data,
-        }
-      );
+      const uploaded = await UploadImage(file);
 
-      const uploaded = await res.json();
-      if (uploaded.secure_url) {
-        setFormData({ ...formData, thumbnail: uploaded.secure_url });
+      if (uploaded) {
+        setFormData({ ...formData, thumbnail: uploaded });
         toast.success("Image uploaded successfully");
+      } else {
+        console.log("error uploaded", uploaded);
       }
     } catch {
       toast.error("Image upload failed");
@@ -140,7 +142,9 @@ export default function BlogManager() {
             : [],
       };
 
-      const currentUserId = "USER_ID_HERE";
+      // ✅ Add logged-in user’s ID (if available)
+      // Replace with your actual user context or token decode logic
+      const currentUserId = "USER_ID_HERE"; // dynamically replace this
       const payload = { ...formattedData, authorId: currentUserId };
 
       if (editingBlog) {
@@ -152,6 +156,7 @@ export default function BlogManager() {
         toast.success("Blog created successfully");
       }
 
+      // ✅ Refresh blog list
       const refreshed = await getAllBlog();
       setBlogs(refreshed);
       setIsOpen(false);
@@ -254,17 +259,6 @@ export default function BlogManager() {
                 )}
               </div>
 
-              <div>
-                <Label>Content *</Label>
-                <Textarea
-                  value={formData.content}
-                  onChange={(e) =>
-                    setFormData({ ...formData, content: e.target.value })
-                  }
-                  rows={8}
-                  placeholder="Your blog content..."
-                />
-              </div>
               <div className="space-y-2">
                 <Label htmlFor="content">Content *</Label>
                 <RichTextEditor
