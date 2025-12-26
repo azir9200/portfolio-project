@@ -9,11 +9,14 @@ export async function middleware(request: NextRequest) {
   }
 
   // Call your API directly using fetch
-  const res = await fetch(`http://localhost:5000/api/v1/auth/getMe`, {
-    headers: {
-      Authorization: `${token}`,
-    },
-  });
+  const res = await fetch(
+    `https://azir-portfolio-backend.vercel.app/api/v1/auth/getMe`,
+    {
+      headers: {
+        Authorization: `${token}`,
+      },
+    }
+  );
 
   const data = await res.json();
 

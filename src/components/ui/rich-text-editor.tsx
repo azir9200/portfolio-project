@@ -5,7 +5,13 @@ import dynamic from "next/dynamic";
 import "quill/dist/quill.snow.css";
 import { useRef } from "react";
 
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+const ReactQuill = dynamic(async () => import("react-quill-new"), {
+  ssr: false,
+}) as unknown as React.FC<
+  React.ComponentProps<typeof import("react-quill-new")["default"]> & {
+    ref?: any;
+  }
+>;
 
 interface RichTextEditorProps {
   value: string;

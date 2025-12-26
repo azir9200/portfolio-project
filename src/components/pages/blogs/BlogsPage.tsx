@@ -13,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 // ISR every 60 seconds
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function BlogsPage() {
   const blogs = await getAllBlog();

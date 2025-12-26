@@ -29,13 +29,16 @@ export const SignUpUser = async (userData: FieldValues) => {
 
 export const loginUser = async (userData: UserData) => {
   try {
-    const res = await fetch(`http://localhost:5000/api/v1/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
+    const res = await fetch(
+      `https://azir-portfolio-backend.vercel.app/api/v1/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      }
+    );
 
     const result = await res.json();
 
@@ -55,7 +58,6 @@ export const loginUser = async (userData: UserData) => {
 export const verifyUser = async (id: string) => {
   try {
     const res = await fetch(
-      // `https://latest-food-backend.vercel.app/user/verify?order_id=${id}`,
       `${process.env.NEXT_PUBLIC_BASE_API}/user/verify?order_id=${id}`,
 
       {
@@ -120,7 +122,7 @@ export const getCurrentUser = async () => {
 
 export const logout = async () => {
   (await cookies()).delete("accessToken");
-  revalidateTag("loginUser");
+  revalidateTag("loginUser", "max");
 };
 
 export const getNewToken = async () => {

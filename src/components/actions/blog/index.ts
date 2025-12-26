@@ -6,8 +6,10 @@ import { cookies } from "next/headers";
 //  get all posts
 export const getAllBlog = async () => {
   try {
-    const res = await fetch(`http://localhost:5000/api/v1/blog`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {
+      cache: "no-store",
       method: "GET",
+
       next: {
         tags: ["blog"],
       },
@@ -24,7 +26,7 @@ export const getMe = async () => {
   const token = (await cookies()).get("accessToken")!.value;
 
   try {
-    const res = await fetch(`http://localhost:5000/api/v1/auth/me`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/auth/me`, {
       method: "GET",
       headers: {
         Authorization: `${token}`,
@@ -44,12 +46,15 @@ export const getMe = async () => {
 };
 export const getSingleBlog = async (id: string) => {
   try {
-    const res = await fetch(`http://localhost:5000/api/v1/blog/${id}`, {
-      method: "GET",
-      next: {
-        tags: ["blog"],
-      },
-    });
+    const res = await fetch(
+      `https://azir-portfolio-backend.vercel.app/api/v1/blog/${id}`,
+      {
+        method: "GET",
+        next: {
+          tags: ["blog", "max"],
+        },
+      }
+    );
 
     const data = await res.json();
 
@@ -64,16 +69,19 @@ export const createBlog = async (postData: any): Promise<Blog> => {
   console.log(postData);
 
   try {
-    const res = await fetch(`http://localhost:5000/api/v1/blog`, {
-      method: "POST",
-      headers: {
-        Authorization: `${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    });
+    const res = await fetch(
+      `https://azir-portfolio-backend.vercel.app/api/v1/blog`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      }
+    );
     const result = await res.json();
-    revalidateTag("post");
+    revalidateTag("post", "max");
     console.log(result);
     return result;
   } catch (error: any) {
@@ -86,17 +94,20 @@ export const UpdateBlog = async (postData: any, id: string): Promise<any> => {
   const token = (await cookies()).get("accessToken")!.value;
 
   try {
-    const res = await fetch(`http://localhost:5000/api/v1/blog/blogs/${id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(postData),
-    });
+    const res = await fetch(
+      `https://azir-portfolio-backend.vercel.app/api/v1/blog/blogs/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      }
+    );
     const result = await res.json();
     console.log(result);
-    revalidateTag("post");
+    revalidateTag("post", "max");
     return result;
   } catch (error: any) {
     throw new Error(error.message || "Something went wrong");
@@ -106,15 +117,18 @@ export const deleteBlog = async (id: string) => {
   const token = (await cookies()).get("accessToken")!.value;
 
   try {
-    const res = await fetch(`http://localhost:5000/api/v1/blog/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `${token}`,
-      },
-      next: {
-        tags: ["blog"],
-      },
-    });
+    const res = await fetch(
+      `https://azir-portfolio-backend.vercel.app/api/v1/blog/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `${token}`,
+        },
+        next: {
+          tags: ["blog", "max"],
+        },
+      }
+    );
 
     const data = await res.json();
 

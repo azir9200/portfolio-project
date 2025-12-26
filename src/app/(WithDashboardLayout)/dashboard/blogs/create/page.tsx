@@ -7,7 +7,6 @@ import {
   UpdateBlog,
 } from "@/components/actions/blog";
 import { UploadImage } from "@/components/pages/blogs/handleUploadImage";
-// import { createBlog, deleteBlog, getBlogs, updateBlog } from "@/actions/blog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -133,7 +132,6 @@ export default function BlogManager() {
       setErrors({});
       setLoading(true);
 
-      // ✅ Convert tags to array before sending
       const formattedData = {
         ...formData,
         tags:
@@ -142,8 +140,7 @@ export default function BlogManager() {
             : [],
       };
 
-      // ✅ Add logged-in user’s ID (if available)
-      // Replace with your actual user context or token decode logic
+      
       const currentUserId = "USER_ID_HERE"; // dynamically replace this
       const payload = { ...formattedData, authorId: currentUserId };
 

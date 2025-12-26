@@ -1,8 +1,8 @@
 "use client";
 
 import login01 from "@/assets/images/login01.jpg";
+import { loginUser } from "@/components/actions/auth";
 import { Button } from "@/components/ui/button";
-import { loginUser } from "@/services/AuthService";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -98,18 +98,18 @@ const LoginForm = () => {
           </div>
 
           {/* Role Buttons */}
-          <div className="mb-6 grid grid-cols-2 gap-3">
-            <Button
+          <div className="mb-6 w-full">
+            {/* <Button
               type="button"
               onClick={() => handleDefaultLogin("user")}
               className="bg-gradient-to-br from-indigo-700 to-indigo-500 hover:opacity-90 text-white py-2 text-sm sm:text-base"
             >
               Demo User
-            </Button>
+            </Button> */}
             <Button
               type="button"
               onClick={() => handleDefaultLogin("admin")}
-              className="bg-gradient-to-br from-purple-700 to-purple-500 hover:opacity-90 text-white py-2 text-sm sm:text-base"
+              className="bg-gradient-to-br from-purple-700 to-purple-500 hover:opacity-90 text-white py-2 text-sm sm:text-base w-full"
             >
               Demo Admin
             </Button>
