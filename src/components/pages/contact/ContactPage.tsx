@@ -12,15 +12,55 @@ import {
   User,
 } from "lucide-react";
 import { useInView } from "react-intersection-observer";
+import { useState } from "react";
 
-const Contact = () => {
+const ContactPage = () => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess(false);
+
+    const form = e.target;
+
+    const formData = {
+      name: form.name.value,
+      email: form.email.value,
+      subject: form.subject.value,
+      message: form.message.value,
+    };
+
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    setLoading(false);
+
+    if (res.ok) {
+      setSuccess(true);
+      form.reset();
+    }
+    {
+      success && (
+        <p className="text-green-600 text-sm">Message sent successfully!</p>
+      );
+    }
+  };
 
   return (
-    <section ref={ref} className="relative py-10 px-4 overflow-hidden">
+    <section
+      id="contact"
+      ref={ref}
+      className="relative py-10 px-4 overflow-hidden"
+    >
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
@@ -41,13 +81,15 @@ const Contact = () => {
             Get In Touch
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Have a project in mind? Let&apos;s discuss how we can work together
-            to bring your ideas to life
+            I’m actively seeking opportunities as a software developer where I
+            can contribute to real-world products, grow my skills, and work with
+            a collaborative team. If you’re hiring or looking for a motivated
+            developer, I’d love to connect.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
-          {/* Contact Info */}
+          {/* ContactPage Info */}
           <div
             className={`space-y-8 transition-all duration-700 delay-100 ${
               inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
@@ -56,9 +98,11 @@ const Contact = () => {
             <div>
               <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                I&apos;m always open to discussing new projects, creative ideas,
-                or opportunities to be part of your visions. Feel free to reach
-                out through any of the channels below.
+                I’m open to full-time, internship, or entry-level software
+                development roles. I enjoy working in collaborative
+                environments, learning from experienced engineers, and building
+                scalable, user-focused applications. Feel free to reach out if
+                you think I’d be a good fit for your team.
               </p>
             </div>
 
@@ -73,9 +117,12 @@ const Contact = () => {
                     <p className="text-sm text-muted-foreground mb-1">
                       Email Address
                     </p>
-                    <p className="font-semibold text-lg">
-                      azir.uddin@example.com
-                    </p>
+                    <a
+                      href="mailto:aziruddin83@gmail.com"
+                      className="font-semibold text-lg hover:text-primary transition-colors"
+                    >
+                      aziruddin83@gmail.com
+                    </a>
                   </div>
                 </div>
               </div>
@@ -90,7 +137,7 @@ const Contact = () => {
                     <p className="text-sm text-muted-foreground mb-1">
                       Phone Number
                     </p>
-                    <p className="font-semibold text-lg">+1 (555) 123-4567</p>
+                    <p className="font-semibold text-lg">00351920319177</p>
                   </div>
                 </div>
               </div>
@@ -105,14 +152,14 @@ const Contact = () => {
                     <p className="text-sm text-muted-foreground mb-1">
                       Location
                     </p>
-                    <p className="font-semibold text-lg">San Francisco, CA</p>
+                    <p className="font-semibold text-lg">Porto, Portugal</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Contact Form */}
+          {/* ContactPage Form */}
           <div
             className={`transition-all duration-700 delay-200 ${
               inView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
@@ -137,7 +184,8 @@ const Contact = () => {
                       Full Name
                     </label>
                     <Input
-                      placeholder="John Doe"
+                      name="name"
+                      placeholder="Your Name..."
                       className="h-12 bg-background/50 border-border focus:border-primary transition-all duration-300"
                     />
                   </div>
@@ -148,8 +196,9 @@ const Contact = () => {
                       Email Address
                     </label>
                     <Input
+                      name="email"
                       type="email"
-                      placeholder="john@example.com"
+                      placeholder="your Email..."
                       className="h-12 bg-background/50 border-border focus:border-primary transition-all duration-300"
                     />
                   </div>
@@ -160,7 +209,7 @@ const Contact = () => {
                       Subject
                     </label>
                     <Input
-                      placeholder="Project Inquiry"
+                      name="subject"
                       className="h-12 bg-background/50 border-border focus:border-primary transition-all duration-300"
                     />
                   </div>
@@ -171,12 +220,13 @@ const Contact = () => {
                       Message
                     </label>
                     <Textarea
-                      placeholder="Tell me about your project, ideas, or any questions you have..."
+                      name="message"
+                      placeholder="Write your message here...."
                       className="min-h-[120px] resize-none bg-background/50 border-border focus:border-primary transition-all duration-300"
                     />
                   </div>
-
                   <Button
+                    type="submit"
                     size="lg"
                     className="w-full group/btn relative overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-primary/50 transition-all duration-500"
                   >
@@ -196,4 +246,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactPage;

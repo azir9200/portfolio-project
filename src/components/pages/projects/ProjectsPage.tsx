@@ -80,7 +80,9 @@ const Projects = () => {
 
                   <CardHeader>
                     <CardTitle className="gradient-text">
-                      {project.title}
+                      <p className="text-2xl text-indigo-500">
+                        {project.title}{" "}
+                      </p>
                     </CardTitle>
                     <CardDescription className="line-clamp-2">
                       {project.description}

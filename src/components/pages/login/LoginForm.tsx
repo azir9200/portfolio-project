@@ -3,6 +3,7 @@
 import login01 from "@/assets/images/login01.jpg";
 import { loginUser } from "@/components/actions/auth";
 import { Button } from "@/components/ui/button";
+import { Fullscreen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -30,7 +31,7 @@ const LoginForm = () => {
     try {
       console.log(data, "login data");
       const res = await loginUser(data);
-      console.log("login res", res);
+     
 
       if (res?.success) {
         // ✅ assuming your backend returns success flag
@@ -58,17 +59,16 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-200 via-purple-200 to-pink-200 px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen flex items-center justify-center  px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex flex-col lg:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
         {/* === Left Section (Illustration) === */}
-        <div className="flex justify-center items-center w-full lg:w-1/2 bg-gradient-to-br from-indigo-600 to-purple-500 text-white relative p-8 md:p-10">
+        <div className="relative w-full lg:w-1/2 min-h-[500px] lg:min-h-full">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.08),transparent)]" />
-          <div className="relative z-10 text-center">
+          <div className=" text-center">
             <Image
               src={login01}
               alt="Login Illustration"
-              width={350}
-              height={350}
+              fill
               className="mx-auto mb-6 rounded-xl object-cover shadow-lg"
               priority
             />
@@ -89,12 +89,6 @@ const LoginForm = () => {
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800">
               Log in to Your Account
             </h2>
-            <Link
-              href="/"
-              className="text-sm sm:text-base font-medium text-indigo-600 hover:text-purple-700 transition"
-            >
-              Home
-            </Link>
           </div>
 
           {/* Role Buttons */}
@@ -109,7 +103,7 @@ const LoginForm = () => {
             <Button
               type="button"
               onClick={() => handleDefaultLogin("admin")}
-              className="bg-gradient-to-br from-purple-700 to-purple-500 hover:opacity-90 text-white py-2 text-sm sm:text-base w-full"
+              className="bg-gradient-to-br from-purple-400 to-blue-500 hover:opacity-90 text-white py-2 text-sm sm:text-base w-full"
             >
               Demo Admin
             </Button>
@@ -135,8 +129,8 @@ const LoginForm = () => {
                     message: "Invalid email format",
                   },
                 })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm sm:text-base"
-                placeholder="youremail@example.com"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                placeholder="your email here..."
               />
               {errors.email && (
                 <p className="text-sm text-red-500 mt-1">
@@ -171,8 +165,8 @@ const LoginForm = () => {
                     message: "Password must be at least 6 characters",
                   },
                 })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm sm:text-base"
-                placeholder="••••••••"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Your password.."
               />
               {errors.password && (
                 <p className="text-sm text-red-500 mt-1">
@@ -185,11 +179,22 @@ const LoginForm = () => {
             <Button
               disabled={isSubmitting}
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 sm:py-2.5 rounded-lg text-sm sm:text-base transition"
+              className="bg-gradient-to-br from-blue-400 to-purple-500 hover:opacity-90 text-white py-2 text-sm sm:text-base w-full"
             >
               {isSubmitting ? "Logging in..." : "Login"}
             </Button>
           </form>
+          <div className="text-center mt-6">
+            <p className="text-sm text-gray-600">
+              If you aren&apos;t Admin, Please go to
+              <Link
+                href="/"
+                className="text-purple-700 hover:text-blue-700 pl-2 hover:underline"
+              >
+                Home
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

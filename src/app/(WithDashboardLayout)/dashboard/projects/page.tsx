@@ -30,6 +30,7 @@ import { ApiError, ProjectsResponse } from "@/types";
 import { Edit, Loader2, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { z } from "zod";
 
 // ✅ Validation schema (sync with backend)
@@ -46,6 +47,11 @@ const projectSchema = z.object({
   features: z.string().optional(),
   technologies: z.string().optional(),
 });
+
+const enhanceCloudinaryUrl = (url: string) => {
+  if (!url || !url.includes("/upload/")) return url;
+  return url.replace("/upload/", "/upload/f_auto,q_auto:best,w_1600/");
+};
 
 export default function ProjectManager() {
   const [isOpen, setIsOpen] = useState(false);
@@ -122,7 +128,7 @@ export default function ProjectManager() {
     try {
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/dft2gbhxw/image/upload`,
-        { method: "POST", body: data }
+        { method: "POST", body: data },
       );
 
       const result = await res.json();
@@ -187,8 +193,18 @@ export default function ProjectManager() {
   return (
     <div className="p-6 w-full">
       {/* Top Section */}
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Manage Projects</h2>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex justify-between items-center mb-6"
+      >
+        <div>
+          <h2 className="text-2xl font-bold">Manage Projects</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Create, update, and showcase your work with high-quality visuals.
+          </p>
+        </div>
 
         {/* Dialog for Create / Edit */}
         <Dialog
@@ -364,7 +380,7 @@ export default function ProjectManager() {
             </form>
           </DialogContent>
         </Dialog>
-      </div>
+      </motion.div>
 
       {/* Projects List */}
       {loading ? (
@@ -372,58 +388,81 @@ export default function ProjectManager() {
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
       ) : projects.data.length > 0 ? (
-        <div className="grid gap-4">
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={{
+            hidden: { opacity: 0 },
+            show: { opacity: 1, transition: { staggerChildren: 0.08 } },
+          }}
+          className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
+        >
           {projects?.data.map((project: any) => (
-            <Card key={project.id} className="glass-effect hover-lift">
-              {project.image && (
-                <Image
-                  height={500}
-                  width={800}
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-48 object-cover rounded-t-lg"
-                />
-              )}
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <CardTitle>{project.title}</CardTitle>
-                    <CardDescription className="mt-2">
-                      {project.description}
-                    </CardDescription>
-
-                    {project.technologies?.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {project.technologies.map((tech: string) => (
-                          <Badge key={tech} variant="secondary">
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
+            <motion.div
+              key={project.id}
+              variants={{
+                hidden: { opacity: 0, y: 12 },
+                show: { opacity: 1, y: 0 },
+              }}
+            >
+              <Card className="group relative overflow-hidden border-border/60 bg-card/60 backdrop-blur-md hover:-translate-y-1 transition-all duration-300">
+                {project.image && (
+                  <div className="relative">
+                    <Image
+                      height={500}
+                      width={800}
+                      src={enhanceCloudinaryUrl(project.image)}
+                      alt={project.title}
+                      quality={90}
+                      sizes="(min-width: 1280px) 420px, (min-width: 640px) 45vw, 100vw"
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
+                )}
+                <CardHeader>
+                  <div className="flex justify-between items-start gap-3">
+                    <div className="flex-1">
+                      <CardTitle className="text-2xl text-slate-500">
+                        {project.title}
+                      </CardTitle>
+                      <CardDescription className="mt-2 line-clamp-3">
+                        {project.description}
+                      </CardDescription>
 
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(project)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDelete(project.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                      {project.technologies?.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {project.technologies.map((tech: string) => (
+                            <Badge key={tech} variant="secondary">
+                              {tech}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(project)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDelete(project.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </CardHeader>
-            </Card>
+                </CardHeader>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
         <Card className="text-center p-12">
           <CardContent>

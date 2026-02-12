@@ -1,4 +1,6 @@
 "use client";
+import { motion } from "framer-motion";
+import { ArrowDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Eye, FileDown, Mail } from "lucide-react";
@@ -41,19 +43,24 @@ const Hero = () => {
                 </span>
               </h2>
 
-              <p className="text-lg text-gray-600 leading-relaxed max-w-xl">
-                I’m a MERN stack developer with experience building full-stack
-                web applications using React, TypeScript, Next.js, Redux, RTK
-                Query, and Node.js (Express + MongoDB). I help businesses bring
-                their ideas to life by creating clean, scalable, and responsive
-                web solutions.
+              <p className="text-lg text-foreground leading-relaxed max-w-xl">
+                I am a Senior Full-Stack Developer with 6+ years of experience
+                designing, building, and maintaining production web applications
+                across frontend, backend, and cloud infrastructure. Strong
+                background in modern JavaScript frameworks, backend API
+                development, database design, and cloud deployments. Proven
+                track record delivering end-to-end solutions both as a long-term
+                in-house engineer and as a senior freelancer on Upwork and
+                Fiverr. Experienced in mentoring developers, reviewing code, and
+                translating business requirements into practical, maintainable
+                technical solutions
               </p>
             </div>
 
             {/* Buttons */}
             <div className="flex flex-wrap gap-4">
               <a
-                href="https://drive.google.com/file/d/1L5VhaDjPLdwGi_K3mB3tqUDanHITF1Nu/view?usp=sharing"
+                href="https://docs.google.com/document/d/1HxqhwR29SrReGr6aQw6U65-DXeP3-yC2NudYMuxYWY8/edit?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -63,6 +70,22 @@ const Hero = () => {
                 >
                   <Eye className="w-4 h-5 mr-2" />
                   View Resume
+                </Button>
+              </a>
+              {/* Download Resume Button */}
+              <a
+                href="https://docs.google.com/document/d/1HxqhwR29SrReGr6aQw6U65-DXeP3-yC2NudYMuxYWY8/export?format=pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-2"
+                >
+                  <FileDown className="w-5 h-5 mr-2" />
+                  Download Resume
                 </Button>
               </a>
 
@@ -136,6 +159,22 @@ const Hero = () => {
             </div>
           </div>
         </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
+          <motion.a
+            href="#education"
+            className="flex flex-col items-center gap-2 text-foreground hover:text-primary transition-colors"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <span className="text-sm">Scroll Down</span>
+            <ArrowDown size={20} />
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   );

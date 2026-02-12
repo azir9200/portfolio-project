@@ -1,66 +1,10 @@
 "use client";
-import {
-  Cloud,
-  Code2,
-  Container,
-  Cpu,
-  Database,
-  FileCode,
-  GitBranch,
-  Layers,
-  Layout,
-  Palette,
-  Server,
-  Sparkles,
-  Zap,
-} from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
-
-const skillCategories = [
-  {
-    title: "Frontend Development",
-    icon: Layout,
-    skills: [
-      { name: "React", level: 95, icon: FileCode },
-      { name: "Next.js", level: 90, icon: Zap },
-      { name: "TypeScript", level: 95, icon: Code2 },
-      { name: "Tailwind CSS", level: 92, icon: Palette },
-      { name: "JavaScript", level: 97, icon: Code2 },
-    ],
-  },
-  {
-    title: "Backend Development",
-    icon: Server,
-    skills: [
-      { name: "Node.js", level: 90, icon: Cpu },
-      { name: "Python", level: 85, icon: Code2 },
-      { name: "Express.js", level: 88, icon: Layers },
-      { name: "FastAPI", level: 82, icon: Zap },
-      { name: "REST APIs", level: 92, icon: Server },
-    ],
-  },
-  {
-    title: "Database & Cloud",
-    icon: Database,
-    skills: [
-      { name: "PostgreSQL", level: 90, icon: Database },
-      { name: "MongoDB", level: 88, icon: Database },
-      { name: "AWS", level: 85, icon: Cloud },
-      { name: "Redis", level: 80, icon: Zap },
-    ],
-  },
-  {
-    title: "DevOps & Tools",
-    icon: Container,
-    skills: [
-      { name: "Git", level: 95, icon: GitBranch },
-      { name: "Docker", level: 88, icon: Container },
-      { name: "CI/CD", level: 85, icon: Zap },
-      { name: "Kubernetes", level: 82, icon: Cloud },
-    ],
-  },
-];
+import { skillCategories } from "./skillCategories";
+import { motion } from "framer-motion";
+import { ArrowDown } from "lucide-react";
 
 const Skills = () => {
   const { ref, inView } = useInView({
@@ -72,6 +16,7 @@ const Skills = () => {
 
   return (
     <section
+      id="skills"
       ref={ref}
       className="py-10 px-4 bg-secondary/20 relative overflow-hidden"
     >
@@ -245,6 +190,22 @@ const Skills = () => {
           })}
         </div>
       </div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+      >
+        <motion.a
+          href="#education"
+          className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <span className="text-sm">Scroll Down</span>
+          <ArrowDown size={20} />
+        </motion.a>
+      </motion.div>
     </section>
   );
 };
