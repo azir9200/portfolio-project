@@ -36,7 +36,7 @@ const Skills = () => {
         ))}
       </div>
 
-      <div className="container max-w-6xl mx-auto relative z-10">
+      <div className="container max-w-7xl mx-auto relative z-10">
         <div
           className={`text-center mb-16 transition-all duration-1000 ${
             inView
@@ -53,13 +53,15 @@ const Skills = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Technical Proficiency
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            A comprehensive overview of my technical skills and expertise across
-            various domains
+          <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+            Full stack from JavaScript/TypeScript and React/Next.js through
+            APIs, data layers, AWS, Kubernetes, and testing—mapped to the same
+            breadth as my resume: rendering modes, event-driven design,
+            security, and CI/CD.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
           {skillCategories.map((category, index) => {
             const Icon = category.icon;
             const isHovered = hoveredCard === index;

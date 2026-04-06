@@ -81,10 +81,9 @@ const ContactPage = () => {
             Get In Touch
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            I’m actively seeking opportunities as a software developer where I
-            can contribute to real-world products, grow my skills, and work with
-            a collaborative team. If you’re hiring or looking for a motivated
-            developer, I’d love to connect.
+            Senior Software Engineer based in Porto, Portugal. Reach out for
+            senior engineering roles, architecture discussions, or collaborations
+            on scalable web and cloud systems.
           </p>
         </div>
 
@@ -98,11 +97,8 @@ const ContactPage = () => {
             <div>
               <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                I’m open to full-time, internship, or entry-level software
-                development roles. I enjoy working in collaborative
-                environments, learning from experienced engineers, and building
-                scalable, user-focused applications. Feel free to reach out if
-                you think I’d be a good fit for your team.
+                I work across React, Next.js, and Node.js stacks with AWS, Docker,
+                and Kubernetes. Prefer email or WhatsApp for a quick response.
               </p>
             </div>
 
@@ -118,10 +114,10 @@ const ContactPage = () => {
                       Email Address
                     </p>
                     <a
-                      href="mailto:aziruddin83@gmail.com"
+                      href="mailto:aziruddin0106@gmail.com"
                       className="font-semibold text-lg hover:text-primary transition-colors"
                     >
-                      aziruddin83@gmail.com
+                      aziruddin0106@gmail.com
                     </a>
                   </div>
                 </div>
@@ -137,7 +133,12 @@ const ContactPage = () => {
                     <p className="text-sm text-muted-foreground mb-1">
                       Phone Number
                     </p>
-                    <p className="font-semibold text-lg">00351920319177</p>
+                    <a
+                      href="tel:+351920319177"
+                      className="font-semibold text-lg hover:text-primary transition-colors"
+                    >
+                      +351 920 319 177
+                    </a>
                   </div>
                 </div>
               </div>

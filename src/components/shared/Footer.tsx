@@ -106,7 +106,7 @@ const Footer = () => {
           py={{ xs: 2, md: 3 }}
         >
           <Typography component="p" color="white" fontSize={{ xs: 13, md: 15 }}>
-            &copy;2024 Portfolio Projects. All Rights Reserved.
+            &copy;2026 Azir Uddin. All Rights Reserved.
           </Typography>
 
           <Typography

@@ -21,8 +21,8 @@ export default function Experience() {
           </h2>
 
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Real-world roles where I built responsibility, customer
-            communication, and operational discipline.
+            Senior software engineering roles delivering scalable web platforms,
+            cloud systems, and high-performance user experiences.
           </p>
         </motion.div>
 

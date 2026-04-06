@@ -13,7 +13,10 @@ const EducationPage = () => {
           <h2 className="text-3xl md:text-4xl font-bold  mb-4">
             Educational History
           </h2>
-          <p className="text-xl ">My academic journey</p>
+          <p className="text-xl text-muted-foreground">
+            Bachelor&apos;s in Computer Science · Languages: English, Portuguese,
+            Spanish, Italian
+          </p>
         </div>
 
         <div className="max-w-4xl mx-auto">

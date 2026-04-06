@@ -18,6 +18,9 @@ const Hero = () => {
           {/* Left Side - Text Content */}
           <div className="space-y-8">
             <div className="md:space-y-4 space-y-2">
+              <p className="text-sm md:text-base font-medium text-muted-foreground">
+                Senior Software Engineer · Porto, Portugal
+              </p>
               <h1 className="text-xl lg:text-4xl font-bold text-gray-900 leading-tight">
                 <span className="text-gray-800">Hi, I&apos;m </span>
 
@@ -30,8 +33,8 @@ const Hero = () => {
                 <span className="text-[#149ECA] font-bold">
                   <Typewriter
                     words={[
-                      "Full-Stack MERN Developer.",
-                      "Specializing in Clean, Scalable Web Apps & API Integration.",
+                      "React, Next.js & Node.js at scale.",
+                      "SSR, microservices & AWS cloud platforms.",
                     ]}
                     loop
                     cursor
@@ -44,26 +47,17 @@ const Hero = () => {
               </h2>
 
               <p className="text-lg text-foreground leading-relaxed max-w-xl">
-                I am a Senior Full-Stack Developer with 6+ years of experience
-                designing, building, and maintaining production web applications
-                across frontend, backend, and cloud infrastructure. Strong
-                background in modern JavaScript frameworks, backend API
-                development, database design, and cloud deployments. Proven
-                track record delivering end-to-end solutions both as a long-term
-                in-house engineer and as a senior freelancer on Upwork and
-                Fiverr. Experienced in mentoring developers, reviewing code, and
-                translating business requirements into practical, maintainable
-                technical solutions
+                Senior Software Engineer with 9+ years of experience in
+                JavaScript and TypeScript. I build scalable, high-performance
+                applications with React, Next.js, and Node.js—covering SSR,
+                API design, microservices, and event-driven systems—with strong
+                focus on performance, AWS, Docker, Kubernetes, and CI/CD.
               </p>
             </div>
 
             {/* Buttons */}
             <div className="flex flex-wrap gap-4">
-              <a
-                href="https://docs.google.com/document/d/1HxqhwR29SrReGr6aQw6U65-DXeP3-yC2NudYMuxYWY8/edit?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-900 hover:to-purple-900 text-white px-4"
@@ -72,13 +66,7 @@ const Hero = () => {
                   View Resume
                 </Button>
               </a>
-              {/* Download Resume Button */}
-              <a
-                href="https://docs.google.com/document/d/1HxqhwR29SrReGr6aQw6U65-DXeP3-yC2NudYMuxYWY8/export?format=pdf"
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="/resume.pdf" download target="_blank" rel="noopener noreferrer">
                 <Button
                   size="lg"
                   variant="outline"
@@ -124,14 +112,14 @@ const Hero = () => {
                 <FaGithub className="w-6 h-6" />
               </a>
               <a
-                href="https://wa.me/00351920319177"
+                href="https://wa.me/351920319177"
                 target="_blank"
                 className="text-gray-600 hover:text-blue-600 transition-colors"
               >
                 <FaWhatsapp className="w-6 h-6" />
               </a>
               <a
-                href="https://mail.google.com/mail/u/0/#inbox?compose=new"
+                href="mailto:aziruddin0106@gmail.com"
                 className="text-gray-600 hover:text-blue-600 transition-colors"
               >
                 <Mail className="w-6 h-6" />
@@ -146,7 +134,7 @@ const Hero = () => {
                 <div className="w-full h-full rounded-full bg-white p-4">
                   <Image
                     src={HeroImg}
-                    alt="Portrait of MD Azir Uddin"
+                    alt="Portrait of Azir Uddin"
                     width={400}
                     height={400}
                     className="object-cover rounded-full"

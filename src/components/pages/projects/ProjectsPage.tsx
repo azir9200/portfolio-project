@@ -1,5 +1,6 @@
 "use client";
 import { getProjects } from "@/components/actions/project";
+import { featuredProjects } from "@/components/pages/projects/projectsData";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,14 +16,31 @@ import { ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+function mergeWithFeatured(apiData: ProjectsResponse["data"] | undefined) {
+  const api = apiData ?? [];
+  const featuredLinks = new Set(
+    featuredProjects.map((p) => p.liveLink).filter(Boolean),
+  );
+  const rest = api.filter((p: { liveLink?: string | null }) => {
+    if (!p?.liveLink) return true;
+    return !featuredLinks.has(p.liveLink);
+  });
+  return [...featuredProjects, ...rest];
+}
+
 const Projects = () => {
   const [projects, setProjects] = useState<ProjectsResponse>({ data: [] });
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     const fetchProjects = async () => {
-      const res = await getProjects();
-      setProjects(res);
-      setIsLoading(false);
+      try {
+        const res = await getProjects();
+        setProjects({ data: mergeWithFeatured(res?.data) });
+      } catch {
+        setProjects({ data: featuredProjects });
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchProjects();
   }, []);
@@ -36,8 +54,9 @@ const Projects = () => {
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               My Projects
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              A collection of my recent work and side projects
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Production demos including Food Book, PH Health Care, and a Vite +
+              React + Redux reference app—plus additional projects from the API.
             </p>
           </div>
 
@@ -61,7 +80,7 @@ const Projects = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {projects?.data?.map((project: any, index: any) => (
                 <Card
-                  key={project.id}
+                  key={project._id ?? project.id}
                   className="glass-effect hover-lift overflow-hidden group"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
@@ -84,7 +103,7 @@ const Projects = () => {
                         {project.title}{" "}
                       </p>
                     </CardTitle>
-                    <CardDescription className="line-clamp-2">
+                    <CardDescription className="line-clamp-6 text-left leading-relaxed">
                       {project.description}
                     </CardDescription>
                   </CardHeader>
@@ -106,9 +125,9 @@ const Projects = () => {
                         <h4 className="text-sm font-semibold mb-2">
                           Key Features:
                         </h4>
-                        <ul className="text-sm text-muted-foreground space-y-1">
+                        <ul className="text-sm text-muted-foreground space-y-1.5">
                           {project?.features
-                            .slice(0, 3)
+                            .slice(0, 8)
                             .map((feature: any, i: any) => (
                               <li key={i} className="flex items-start gap-2">
                                 <span className="text-primary mt-1">•</span>

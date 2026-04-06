@@ -3,9 +3,19 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
+function projectApiUrl(path: string) {
+  const base = process.env.NEXT_PUBLIC_BASE_API?.trim();
+  if (!base) return null;
+  return `${base.replace(/\/$/, "")}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 // 🟢 Get All
 export async function getProjects() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`, {
+  const url = projectApiUrl("/project");
+  if (!url) {
+    return { data: [] };
+  }
+  const res = await fetch(url, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch projects");
@@ -18,9 +28,13 @@ export async function createProject(formData: any) {
   console.log(formData, "formData");
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`, {
-      // const res = await fetch(`${BASE_API}/project`, {
-
+    const url = projectApiUrl("/project");
+    if (!url) {
+      throw new Error(
+        "NEXT_PUBLIC_BASE_API is not set. Add it to your .env file.",
+      );
+    }
+    const res = await fetch(url, {
       method: "POST",
       headers: {
         Authorization: `${(await cookies()).get("accessToken")?.value || ""}`,
@@ -50,7 +64,13 @@ export async function createProject(formData: any) {
 
 // 🟢 Update
 export async function updateProject(id: string, formData: any) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project/${id}`, {
+  const url = projectApiUrl(`/project/${id}`);
+  if (!url) {
+    throw new Error(
+      "NEXT_PUBLIC_BASE_API is not set. Add it to your .env file.",
+    );
+  }
+  const res = await fetch(url, {
     method: "PATCH",
     headers: {
       Authorization: `${(await cookies()).get("accessToken")!.value}`,
@@ -66,7 +86,13 @@ export async function updateProject(id: string, formData: any) {
 
 // 🟢 Delete
 export async function deleteProject(id: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project/${id}`, {
+  const url = projectApiUrl(`/project/${id}`);
+  if (!url) {
+    throw new Error(
+      "NEXT_PUBLIC_BASE_API is not set. Add it to your .env file.",
+    );
+  }
+  const res = await fetch(url, {
     method: "PATCH",
     headers: {
       Authorization: `${(await cookies()).get("accessToken")!.value}`,

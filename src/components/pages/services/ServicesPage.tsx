@@ -71,9 +71,9 @@ const ServicesPage = () => {
             What Do I Offer
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Scalable, efficient, and modern web development solutions using the
-            MERN stack (MongoDB, Express.js, React, Node.js) — built to solve
-            real problems and deliver impactful user experiences.
+            End-to-end delivery with React, Next.js, and Node.js—APIs, cloud
+            infrastructure, performance tuning, and maintainable code for
+            demanding production workloads.
           </p>
         </div>
 
